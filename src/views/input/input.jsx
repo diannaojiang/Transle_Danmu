@@ -1,9 +1,10 @@
 import React from 'react'
-import { Mentions, Form, Button,notification } from 'antd';
+import { Mentions, Form, Button,notification ,Radio } from 'antd';
 import $ from 'jquery'
 
 
 var user = 0
+var color = '16777215'
 const Input = (props) => {
   const [form] = Form.useForm();
   const openNotificationWithIcon = (type,message,description) => {
@@ -21,7 +22,11 @@ const Input = (props) => {
     senddanmu(value,value.length)
 
   };
-
+  const onChange = e => {
+    
+    color = e.target.value
+    console.log(color);
+  };
   const senddanmu=(message,length)=>{
     var myDate = new Date(); 
     var room=props.room.num;
@@ -43,7 +48,7 @@ const Input = (props) => {
     $.ajax({
       type: "post",
       url: "https://danmu.sea-group.org/danmu.php",
-      data: {room:room,user:user,danmu:value,loc_user:props.user},//提交到demo.php的数据
+      data: {room:room,user:user,danmu:value,loc_user:props.user,color:color},//提交到demo.php的数据
       dataType: "json",//回调函数接收数据的数据格式
       success: (msg)=>{
         var data='';
@@ -88,6 +93,16 @@ function onkeydown(){
   }
 }
   return (
+    <div>
+      <Radio.Group onChange={onChange}>
+        <Radio.Button value="16777215" style={{color:'black'}}>白色</Radio.Button>
+        <Radio.Button value="14893055" style={{color:'#e33fff'}}>紫色</Radio.Button>
+        <Radio.Button value="65532" style={{color:'#00fffc'}}>青色</Radio.Button>
+        <Radio.Button value="5566168" style={{color:'#54eed8'}}>松石绿</Radio.Button>
+        <Radio.Button value="5816798" style={{color:'#58c1de'}}>雨后蓝</Radio.Button>
+        <Radio.Button value="4546550" style={{color:'#455ff6'}}>星空蓝</Radio.Button>
+
+      </Radio.Group>
     <Form form={form} layout="horizontal" onFinish={onFinish} onKeyDown={()=>onkeydown()}>
       <Form.Item
         name="value"
@@ -107,6 +122,7 @@ function onkeydown(){
         </Button>
       </Form.Item>
     </Form>
+    </div>
   );
 };
 export default Input

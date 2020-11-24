@@ -28,10 +28,16 @@ export default class Demo extends Component {
                 推荐使用<Text strong>Google Chrome</Text>以便正常使用前端页面功能
                 </Paragraph>
                 <Title level={3}>更新日志</Title>
-                <Title level={4}>同传姬 v1.0 2020/11/24</Title>
+                <Title level={4}>同传姬 v1.0 2020/11/23</Title>
                 <Paragraph>
                 基本功能实现完毕。
-                </Paragraph>            
+                </Paragraph> 
+                <Title level={4}>同传姬 v1.1 2020/11/24</Title>
+                <Paragraph>
+                添加无延迟直播画面显示。
+                更新多账户区分账号池功能。
+                添加同传弹幕颜色选择。
+                </Paragraph>                 
             </Content>
         )
     }
