@@ -95,12 +95,25 @@ function onkeydown(){
   return (
     <div>
       <Radio.Group onChange={onChange}>
-        <Radio.Button value="16777215" style={{color:'black'}}>白色</Radio.Button>
+        <Radio.Button value="16777215" style={{color:'#000000'}}>白色</Radio.Button>
         <Radio.Button value="14893055" style={{color:'#e33fff'}}>紫色</Radio.Button>
-        <Radio.Button value="65532" style={{color:'#00fffc'}}>青色</Radio.Button>
         <Radio.Button value="5566168" style={{color:'#54eed8'}}>松石绿</Radio.Button>
         <Radio.Button value="5816798" style={{color:'#58c1de'}}>雨后蓝</Radio.Button>
         <Radio.Button value="4546550" style={{color:'#455ff6'}}>星空蓝</Radio.Button>
+        <Radio.Button value="9920249" style={{color:'#975ef9'}}>紫罗兰</Radio.Button>
+        <Radio.Button value="12802438" style={{color:'#c35986'}}>梦境红</Radio.Button>
+        <Radio.Button value="16747553" style={{color:'#ff8c21'}}>热力橙</Radio.Button>
+        <Radio.Button value="16774434" style={{color:'#fff522'}}>香槟金</Radio.Button>
+        <Radio.Button value="16738408" style={{color:'#ff6868'}}>红色</Radio.Button>
+        <Radio.Button value="6737151" style={{color:'#66ccff'}}>蓝色</Radio.Button>
+        <Radio.Button value="65532" style={{color:'#00fffc'}}>青色</Radio.Button>
+        <Radio.Button value="16766720" style={{color:'#ffd700'}}>盛典金</Radio.Button>
+        <Radio.Button value="4286945" style={{color:'#4169e1'}}>升腾蓝</Radio.Button>
+        <Radio.Button value="16474408" style={{color:'#fb6128'}}>南瓜色</Radio.Button>
+        <Radio.Button value="8322816" style={{color:'#7eff00'}}>绿色</Radio.Button>
+        <Radio.Button value="16772431" style={{color:'#ffed4f'}}>黄色</Radio.Button>
+        <Radio.Button value="16750592" style={{color:'#ff9800'}}>橙色</Radio.Button>
+        <Radio.Button value="16741274" style={{color:'#ff739a'}}>粉色</Radio.Button>
 
       </Radio.Group>
     <Form form={form} layout="horizontal" onFinish={onFinish} onKeyDown={()=>onkeydown()}>
