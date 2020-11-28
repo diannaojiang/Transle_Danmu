@@ -4,7 +4,7 @@ import $ from 'jquery'
 
 
 var user = 0
-var color = '16777215'
+var color = '14893055'
 const Input = (props) => {
   const [form] = Form.useForm();
   const openNotificationWithIcon = (type,message,description) => {
@@ -100,7 +100,7 @@ function onkeydown(){
         <Radio.Button value="5566168" style={{color:'#54eed8'}}>松石绿</Radio.Button>
         <Radio.Button value="5816798" style={{color:'#58c1de'}}>雨后蓝</Radio.Button>
         <Radio.Button value="4546550" style={{color:'#455ff6'}}>星空蓝</Radio.Button>
-        <Radio.Button value="9920249" style={{color:'#975ef9'}}>紫罗兰</Radio.Button>
+        <Radio.Button defaultChecked value="9920249" style={{color:'#975ef9'}}>紫罗兰</Radio.Button>
         <Radio.Button value="12802438" style={{color:'#c35986'}}>梦境红</Radio.Button>
         <Radio.Button value="16747553" style={{color:'#ff8c21'}}>热力橙</Radio.Button>
         <Radio.Button value="16774434" style={{color:'#fff522'}}>香槟金</Radio.Button>

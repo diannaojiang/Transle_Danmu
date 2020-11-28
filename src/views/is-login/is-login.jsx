@@ -1,8 +1,9 @@
 import React,{Component} from 'react'
 import $ from 'jquery'
 
-import { Form, Input, Button, notification} from 'antd';
+import { Form, Input, Button, notification,Typography} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+const { Title, Paragraph, Text } = Typography;
 
 
 export default class IsLogin extends Component {
@@ -47,6 +48,10 @@ export default class IsLogin extends Component {
               });
           };
           return (
+          <>
+                    <Paragraph>
+                    <Text strong>同传姬采用账号池机制，每个字幕组拥有自己独立的账号池。如需申请账号或开通新直播间请联系qq3149815852。</Text>
+                    </Paragraph>
             <Form
               name="normal_login"
               className="login-form"
@@ -89,7 +94,7 @@ export default class IsLogin extends Component {
               </Form.Item>
               
             </Form>
-            
+          </>
           );
     }
 }
