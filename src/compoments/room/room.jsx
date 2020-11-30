@@ -5,8 +5,17 @@ import EasyPlayer from '../../views/easy-player/easy-player'
 import './room.css'
 
 export default class Room extends Component {
+    constructor(props){
+        super(props)
+        this.state={
+            data:this.props.data
+        }
+    }
     handleUpdata(){
-        this.forceUpdate()
+        this.setState({
+            data:this.props.data
+        })
+        console.log(this.props.data)
     }
     render(){
         const {url}= this.props.room
@@ -14,7 +23,6 @@ export default class Room extends Component {
         if(this.props.login!==true){
             this.props.history.push('/login')
         }
-        const {data} = this.props
         //console.log(data)
         const {Content} = Layout;
         return(
@@ -28,7 +36,7 @@ export default class Room extends Component {
                 <Input handleUpdata={()=>this.handleUpdata()}/>
                 <List
                 itemLayout="horizontal"
-                dataSource={data}
+                dataSource={this.state.data}
                 className='demo-infinite-container'
                 renderItem={item => (
             <List.Item>
