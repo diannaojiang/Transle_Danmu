@@ -1,70 +1,21 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# 同传姬
+## 介绍
+为方便广大VTB同传man,特此开发同传姬,简化同传流程及提高同传man的体验。
+同传姬采用账号池机制,弹幕通过服务器发包,借助账号池内的账号轮流发送来避免
+B站的弹幕间隔限制和隐性延迟。 同时弹幕姬可以自动添加中括号和截断长语句,能对大段话语自动分割发送,
+帮助同传man减免繁杂的重复工作。 另外为保证超低的同传延迟,同传姬特别研发了B站直播姬超低延迟播放系统,
+对直播流自动追帧,能够在不同环境下减免直播延迟2-14s。(网络环境复杂的情况下由于卡顿,会频繁追帧,导致播放卡顿甚至无法正常使用)
+### 开发中功能
+歌曲歌词搜索并自动按时间戳发送
+## 用户手册
+为保证良好直播环境,请勿擅自传播账号密码--Mark
+欢迎使用同传姬,点击录入按钮,填入自己的昵称并确认后根据提示信息操作，可进行账号池录录入,以便共同工作的流畅性。点击右侧选择直播间可进行同传。
+直播间界面内,在输入框输入同传内容,不需要手动‘【】’,按下回车可自动发送, 超出字数限制会进行时自动断句。
+推荐使用Google Chrome以便正常使用前端页面功能
+## 更新日志
+###同传姬 v1.0 2020/11/23
+基本功能实现完毕。
+###同传姬 v1.1 2020/11/24
+添加无延迟直播画面显示。
+更新多账户区分账号池功能。
+添加同传弹幕颜色选择。
