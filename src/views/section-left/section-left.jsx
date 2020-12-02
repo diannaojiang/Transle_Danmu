@@ -17,12 +17,12 @@ export default class SectionLeft extends Component {
             {num:'21685677',owner:'0g0',color:'#ffffff',url:''},
             {num:'6542258',owner:'小伞',color:'#ff9999',url:''},
             {num:'21573665',owner:'紫桃',color:'#cc99ff',url:''},
-            {num:'4895312',owner:'帕里',color:'#54eed8',url:''},
             {num:'14327465',owner:'猫猫',color:'#ffcccc',url:''},
             {num:'22347054',owner:'nano',color:'#e33fff',url:''},
             {num:'3822389',owner:'mana',color:'#ffffff',url:''},
             {num:'14052636',owner:'大姐',color:'#ff99cc',url:''},
             {num:'22571958',owner:'373',color:'#cccccc',url:''},
+            {num:'1321846',owner:'夏小姐',color:'#a295b0',url:''},
         ]
     }
     onCollapse = () => {
