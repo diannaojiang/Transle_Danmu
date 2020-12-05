@@ -28,12 +28,10 @@ const Input = (props) => {
     console.log(color);
   };
   const senddanmu=(message,length)=>{
-    var myDate = new Date(); 
     var room=props.room.num;
     var split =0;
     var value,others
     value=others=message
-    var msg = {}
     if(length>18){
       value = value.substring(0,18);
       console.log(value)
@@ -70,16 +68,6 @@ const Input = (props) => {
       const values={value:others}
       setTimeout(function(){onFinish(values)}, 800);
     }
-    msg = {
-      time:`${myDate.getHours()}:${myDate.getMinutes()}:${myDate.getSeconds()}`,
-      msg:`${value}`,
-      room:`${props.room.owner}`,
-      avatarColor:`${props.room.color}`
-    }
-    const {data} = props
-      data.unshift(msg)
-      props.setData(data)
-      props.handleUpdata()
   }
 
 function onkeydown(){
