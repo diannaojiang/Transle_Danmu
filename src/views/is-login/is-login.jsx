@@ -3,8 +3,10 @@ import $ from 'jquery'
 
 import { Form, Input, Button, notification,Typography} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-const { Title, Paragraph, Text } = Typography;
 
+import { NavLink } from 'react-router-dom'
+
+const { Title, Paragraph, Text } = Typography;
 
 export default class IsLogin extends Component {
   state={
@@ -91,6 +93,12 @@ export default class IsLogin extends Component {
                 <Button type="primary" htmlType="submit" className="login-form-button">
                 登录
                 </Button>
+
+                <NavLink to = "/signup">
+                  <Button type = "text" color = "primary">
+                    没有账号？注册一个！
+                  </Button>
+                </NavLink>
               </Form.Item>
               
             </Form>
