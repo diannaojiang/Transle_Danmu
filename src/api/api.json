@@ -1,0 +1,131 @@
+{
+  "openapi": "3.0.3",
+
+  "info": {
+    "title": "同传姬",
+    "version": "0.0.1"
+  },
+
+  "servers": [{
+    "url": "https://danmu.sea-group.org"
+  }],
+
+  "paths": {
+    "/login.php": {
+      "post": {
+        "description": "登录",
+        "tags": ["User"],
+
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UserLogin"
+        },
+
+        "responses": {
+          "200": {
+            "description": "登录结果",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/logon.php": {
+      "post": {
+        "description": "注册",
+        "tags": ["User"],
+
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UserLogon"
+        },
+
+        "responses": {
+          "200": {
+            "description": "注册结果",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "requestBodies": {
+      "UserLogin": {
+        "required": true,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "$ref": "#/components/schemas/UserLoginData"
+            }
+          }
+        }
+      },
+
+      "UserLogon": {
+        "required": true,
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "$ref": "#/components/schemas/UserLogonData"
+            }
+          }
+        }
+      }
+    },
+
+    "schemas": {
+      "UserLoginData": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+
+          "pass": {
+            "type": "string"
+          }
+        },
+        "required": ["name", "pass"]
+      },
+
+      "UserLogonData": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+
+          "pass": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "name", "pass"]
+      },
+
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "number",
+            "description": "0 表示成功，1 表示失败"
+          }
+        }
+      }
+    }
+  }
+}
