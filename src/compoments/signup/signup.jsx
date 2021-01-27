@@ -2,22 +2,25 @@ import React, { useState, useCallback } from 'react'
 
 import { Spin, Layout, Form, Input, Button, notification } from 'antd'
 
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
 
 import { api } from '../../api/api'
+
+import { formRules } from '../../common/form-rules'
 
 export const SignUp = (props) => {
   const { Content } = Layout
 
   const [pending, setPending] = useState(false)
 
-  const onFinish = useCallback(({ user, pass }) => {
+  const onFinish = useCallback(({ email, user, pass }) => {
     setPending(true)
 
     api.signup({
+      email,
       user,
       pass
-    }).then(({ status }) => {
+    }).then(() => {
       setPending(false)
 
       notification['success']({
@@ -30,11 +33,19 @@ export const SignUp = (props) => {
     }).catch(error => {
       setPending(false)
 
-      notification['error']({
-        message: '注册失败',
-        description: error.message,
-        duration: 3
-      })
+      if (error.name === 'NetworkError') {
+        notification['error']({
+          message: '连接失败',
+          description: '请检查网络连接或联系本人',
+          duration: 3
+        })
+      } else if (error.name === 'ServerReject') {
+        notification['error']({
+          message: '注册失败',
+          description: '请检查用户名与邮箱',
+          duration: 3
+        })
+      }
     })
   }, [props])
 
@@ -51,11 +62,18 @@ export const SignUp = (props) => {
         onFinish = {onFinish}
       >
         <Form.Item
-          name = "user"
-          rules = {[{
-            required: true,
-            message: '请输入账号!',
-          }]}
+          name = 'email'
+          rules = {formRules['email']}
+        >
+          <Input
+            prefix = {<MailOutlined className = 'site-form-item-icon' />}
+            placeholder = '邮箱'
+          />
+        </Form.Item>
+
+        <Form.Item
+          name = 'user'
+          rules = {formRules['user']}
         >
           <Input
             prefix = {<UserOutlined className="site-form-item-icon" />}
@@ -65,10 +83,7 @@ export const SignUp = (props) => {
 
         <Form.Item
           name = "pass"
-          rules = {[{
-            required: true,
-            message: '请输入密码!',
-          }]}
+          rules = {formRules['pass']}
         >
           <Input
             prefix = {<LockOutlined className="site-form-item-icon" />}
@@ -78,21 +93,9 @@ export const SignUp = (props) => {
         </Form.Item>
 
         <Form.Item
-          name = "confirm"
+          name = "confirm-pass"
           dependencies = {['pass']}
-          rules={[
-            {
-              required: true,
-              message: '请确认密码！',
-            },
-            ({ getFieldValue }) => ({
-              async validator (_, value) {
-                if (value && getFieldValue('pass') !== value) {
-                  throw new Error('两次输入的密码不一致！')
-                }
-              },
-            })
-          ]}
+          rules = {formRules['confirm-pass']}
         >
           <Input
             type = 'password'
