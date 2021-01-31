@@ -3,8 +3,13 @@ import $ from 'jquery'
 
 import { Form, Input, Button, notification,Typography} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-const { Title, Paragraph, Text } = Typography;
 
+import { NavLink } from 'react-router-dom'
+
+import { api } from '../../api/api'
+import { formRules } from '../../common/form-rules'
+
+const { Title, Paragraph, Text } = Typography;
 
 export default class IsLogin extends Component {
   state={
@@ -17,36 +22,33 @@ export default class IsLogin extends Component {
       duration: 3,
     });
   };
-    render(){
-      //console.log(this.props.login);
-        const onFinish = (values) => {
-          
-            //console.log('Received values of form: ', values);
-            this.setState({user:values.user})
-            //console.log(values.user)
-            $.ajax({
-                type: "post",
-                url: "https://danmu.sea-group.org/login.php",
-                data: {user:values.user,pass:values.pass},//提交到demo.php的数据
-                dataType: "json",//回调函数接收数据的数据格式
-                success: (data)=>{
-                    //console.log(data);
-                    var flag = data.status===0
-                    //console.log('flag:'+flag);
-                    this.props.setUser(this.state.user)
-                    console.log(this.props.user)
-                    this.props.isLogin(flag);
-                    this.openNotificationWithIcon(flag?"success":"error",flag?"登陆成功":"登陆失败",flag?"点击房间进行同传,点击录入进行账号池录入":"请重新尝试");
-                    if(flag){
-                      this.props.history.push('/room')
-                    }
-                },
-                error:(msg)=>{
-                    this.openNotificationWithIcon("error","连接失败","请检查网络连接或联系本人");
-                  console.log(msg);
-                }
-              });
-          };
+
+  render () {
+    const onFinish = (values) => {
+      this.setState({
+        user: values.user
+      })
+
+      api.login({
+        user: values.user,
+        pass: values.pass
+      }).then(() => {
+        this.props.setUser(this.state.user)
+        this.props.isLogin(true)
+        this.openNotificationWithIcon("success", "登陆成功", "点击房间进行同传,点击录入进行账号池录入")
+        this.props.history.push('/room')
+      }).catch((error) => {
+        if (error.name === 'NetworkError') {
+          this.openNotificationWithIcon("error", "连接失败", "请检查网络连接或联系本人")
+        } else if (error.name === 'ServerReject') {
+          this.props.setUser(this.state.user)
+          console.log(this.props.user)
+          this.props.isLogin(false)
+          this.openNotificationWithIcon("error", "登录失败", "请重新尝试")
+        }
+      })
+    }
+
           return (
           <>
                     <Paragraph>
@@ -62,23 +64,13 @@ export default class IsLogin extends Component {
             >
               <Form.Item
                 name="user"
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入账号!',
-                  },
-                ]}
+                rules = {formRules['user']}
               >
                 <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="账号" />
               </Form.Item>
               <Form.Item
                 name="pass"
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入密码!',
-                  },
-                ]}
+                rules = {formRules['pass']}
               >
                 <Input
                   prefix={<LockOutlined className="site-form-item-icon" />}
@@ -91,6 +83,12 @@ export default class IsLogin extends Component {
                 <Button type="primary" htmlType="submit" className="login-form-button">
                 登录
                 </Button>
+
+                <NavLink to = "/signup">
+                  <Button type = "text" color = "primary">
+                    没有账号？注册一个！
+                  </Button>
+                </NavLink>
               </Form.Item>
               
             </Form>

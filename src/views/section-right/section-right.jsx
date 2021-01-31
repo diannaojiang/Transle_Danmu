@@ -5,6 +5,7 @@ import { Layout } from 'antd';
 import Room from '../../containers/room/room'
 import Login from '../../containers/login/login'
 import Demo from '../../containers/demo/demo'
+import { SignUp } from '../../compoments/signup/signup';
 
 export default class SectionRight extends Component {
 
@@ -19,6 +20,7 @@ export default class SectionRight extends Component {
                         <Route path='/login' component={Login}/>
                         <Route path='/room' component={Room}/>
                         <Route path='/index' component={Demo}/>
+                        <Route path='/signup' component={SignUp}/>
                         <Redirect to='/index' />
                 </Switch>
                 <Footer style={{ textAlign: 'center' }}>同传姬 ©2020 Created by 電、Mark</Footer>
