@@ -56,6 +56,9 @@ const Input = (props) => {
         if(data.hasOwnProperty("error")){
           openNotificationWithIcon("error",'发送失败',`error:${data.error},user:${data.user},msg:${data.danmu}`);
         }
+        else{
+          openNotificationWithIcon("success",'发送成功',`弹幕:${data.user}:${data.danmu}`);
+        }
         console.log(data);    //控制台输出
       },
       error:(msg)=>{
