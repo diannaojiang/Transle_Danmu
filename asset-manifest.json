@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Transle_Danmu/static/css/main.4f11413c.chunk.css",
+    "main.js": "/Transle_Danmu/static/js/main.d13cac40.chunk.js",
+    "main.js.map": "/Transle_Danmu/static/js/main.d13cac40.chunk.js.map",
+    "runtime-main.js": "/Transle_Danmu/static/js/runtime-main.27c13463.js",
+    "runtime-main.js.map": "/Transle_Danmu/static/js/runtime-main.27c13463.js.map",
+    "static/css/2.b72b1a0e.chunk.css": "/Transle_Danmu/static/css/2.b72b1a0e.chunk.css",
+    "static/js/2.4ce020e6.chunk.js": "/Transle_Danmu/static/js/2.4ce020e6.chunk.js",
+    "static/js/2.4ce020e6.chunk.js.map": "/Transle_Danmu/static/js/2.4ce020e6.chunk.js.map",
+    "index.html": "/Transle_Danmu/index.html",
+    "static/css/2.b72b1a0e.chunk.css.map": "/Transle_Danmu/static/css/2.b72b1a0e.chunk.css.map",
+    "static/css/main.4f11413c.chunk.css.map": "/Transle_Danmu/static/css/main.4f11413c.chunk.css.map",
+    "static/js/2.4ce020e6.chunk.js.LICENSE.txt": "/Transle_Danmu/static/js/2.4ce020e6.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.27c13463.js",
+    "static/css/2.b72b1a0e.chunk.css",
+    "static/js/2.4ce020e6.chunk.js",
+    "static/css/main.4f11413c.chunk.css",
+    "static/js/main.d13cac40.chunk.js"
+  ]
+}
