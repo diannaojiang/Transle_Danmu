@@ -92,5 +92,65 @@ export const api = {
     }
 
     throw Named('ServerReject')(new Error('注册失败'))
+  },
+
+  /**
+   * Get Bilibili Account List
+   * @param {{
+   *  user: string
+   * }} payload
+   * @return {Promise<string[]>}
+   */
+  async getBilibiliAccountList ({ user }) {
+    const { data, headers } = buildFormData({
+      loc_user: user
+    })
+
+    let response = null
+
+    try {
+      response = await axios.post('/bililist.php', data, { headers })
+    } catch (err) {
+      console.error(err)
+
+      throw Named('NetworkError')(new Error('网络错误'))
+    }
+
+    return response.data
+  },
+
+  /**
+   * Remove a Bilibili Account
+   * @param {{
+   *  user: string
+   *  nameToRemove: string
+   * }} payload
+   * @returns {Promise<true>}
+   */
+  async removeBilibiliAccount ({ user, nameToRemove }) {
+    const { data, headers } = buildFormData({
+      loc_user: user,
+      del_user: nameToRemove
+    })
+
+    let response = null
+
+    try {
+      response = await axios.post('/bilidel.php', data, { headers })
+    } catch (err) {
+      console.error(err)
+
+      throw Named('NetworkError')(new Error('网络错误'))
+    }
+
+    const { return: status, data: message } = JSON.parse(response.data)
+
+    if (status === "0") {
+      return true
+    }
+
+    const error = Named('RemoveError')(new Error(message))
+    console.error(error)
+    throw error
   }
 }
