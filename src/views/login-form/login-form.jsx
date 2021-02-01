@@ -3,6 +3,8 @@ import $ from 'jquery'
 import { Form, Input, Button, notification} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
+import { BilibiliAccountList } from './bilibili-account-list'
+
 
 export default class LoginForm extends Component {
     openNotificationWithIcon = (type,message,description) => {
@@ -12,6 +14,15 @@ export default class LoginForm extends Component {
       duration: 3,
     });
   };
+
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      forceRefreshAccountList: 0
+    }
+  }
+
     render(){
       console.log(this.props.login);
       //ajax
@@ -36,6 +47,12 @@ export default class LoginForm extends Component {
                         //window.alert('msg');
                         oauthKey(key);
                       }
+
+                      this.setState(state => ({
+                        ...state,
+                        forceRefreshAccountList: state.forceRefreshAccountList + 1
+                      }))
+
                       console.log(data);    //控制台输出
                     },
                     error:(msg)=>{
@@ -66,7 +83,7 @@ export default class LoginForm extends Component {
         };
 
           
-          return (
+          return (<>
             <Form
               name="normal_login"
               className="login-form"
@@ -95,7 +112,12 @@ export default class LoginForm extends Component {
               </Form.Item>
               
             </Form>
-            
-          );
+
+            <BilibiliAccountList
+              user = {this.props.user}
+              forceRefresh = {this.state.forceRefreshAccountList}
+            />
+
+            </>);
     }
 }
