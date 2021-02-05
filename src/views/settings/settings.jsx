@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useRef } from 'react'
 
 import $ from 'jquery'
 
-import { Button, Input, Table, Form, Card } from 'antd'
+import { Button, Input, Table, Form, Card, Modal, notification } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 
 import { api } from '../../api/api'
@@ -10,72 +10,145 @@ import { useAsync } from '../../common/use-async'
 
 import { BilibiliAccountList } from '../login-form/bilibili-account-list'
 
+import QRCode from 'qrcode.react'
+
+const Named = (name) => (error) => {
+  error.name = name
+  return error
+}
+
+const useBilibiliLoginModal = () => {
+  const [visible, setVisible] = useState(false)
+  const [url, setURL] = useState('https://bilibili.com')
+  const [text, setText] = useState('请使用 B 站 App 扫描二维码登录')
+
+  const aborted = useRef(false)
+  const [confirm, setConfirm] = useState(null)
+
+  const login = useCallback(async ({ user, accountName, oauthKey, url }) => {
+    setURL(url)
+    setVisible(true)
+    setConfirm(null)
+    aborted.current = false
+
+    const update = async () => {
+      if (aborted.current) {
+        throw Named('Aborted')(new Error('用户已取消'))
+      }
+
+      const { status, message } = await api.tryToAppendBilibiliAccount({
+        user,
+        accountName,
+        oauthKey
+      })
+
+      console.log({
+        status, message
+      })
+
+      if (status === '0') {
+        setText('登录成功...')
+        return true
+      }
+
+      if (status === '4') {
+        setText('请使用 B 站 App 扫描二维码登录')
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        await update()
+      } else if (status === '5') {
+        setText('请在 App 中确认登录')
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        await update()
+      } else if (status === '2') {
+        setText('二维码已超时，请尝试重新添加')
+        throw Named('Timeout')(new Error('二维码已超时'))
+      } else if (status === '-3') {
+        const waitingConfirm = new Promise(resolve => setConfirm({resolve}))
+        setText('请在 App 扫码登录完成后点击下方确认按钮')
+        await waitingConfirm
+        await update()
+      }
+    }
+
+    return update()
+  }, [])
+
+  const close = useCallback(() => {
+    setVisible(false)
+    aborted.current = true
+  }, [])
+
+  const footer = [(
+    <Button key = 'cancel' onClick = {close}>
+      取消
+    </Button>
+  )]
+
+  if (!!confirm) {
+    footer.unshift(
+      <Button type = 'primary' key = 'confirm' onClick = {confirm.resolve}>
+        我已在 App 上确认登录
+      </Button>
+    )
+  }
+
+  const ui = (
+    <Modal
+      title = '扫码登录'
+      visible = {visible}
+      footer = {footer}
+      width = {512}
+      style = {{
+        textAlign: 'center'
+      }}
+      onCancel = {close}
+    >
+      <QRCode value = {url} size = {256}/>
+      <div>{text}</div>
+    </Modal>
+  )
+
+  return {
+    ui,
+    login,
+    close
+  }
+}
+
 export const AccountListSetting = ({ user }) => {
   const [forceRefreshAccountList, setForceRefreshAccountList] = useState(0)
 
-  const onFinish = (values) => {
-    var oauthKey = (key) => {
-      console.log(key)
-      var name = values.account
-      $.ajax({
-        type: "post",
-        url: "https://danmu.sea-group.org/bililogin.php",
-        data: {
-          request: "oauth",
-          key: key,
-          name: name,
-          loc_user: user
-        }, // 提交到demo.php的数据
-        dataType: "json", // 回调函数接收数据的数据格式
-        success: (msg) => {
-          var data = ''
-          if (msg !== '') {
-            data = eval("(" + msg + ")") // 将返回的 json 数据进行解析，并赋给 data
-          }
-          window.alert("错误码：" + data.return + "\n状态：" + data.data)
+  const { ui: bilibiliLoginModal, login, close } = useBilibiliLoginModal()
 
-          if (data.return === '4' || data.return === '5' || data.return === '-3') {
-            //window.alert('msg')
-            oauthKey(key)
-          }
+  const [requestingState, requestLogin] = useAsync(async () => {
+    return api.requestBilibiliAccountLogin()
+  }, [])
 
-          setForceRefreshAccountList(prev => prev + 1)
+  const onFinish = useCallback(async ({ accountName }) => {
+    try {
+      const { url, oauthKey } = await requestLogin()
+      await login({ user, accountName, url, oauthKey })
+      setForceRefreshAccountList(prev => prev + 1)
+      setTimeout(close, 500)
+    } catch (error) {
+      if (error.name === 'Aborted') {
+        //
+      } else {
+        close()
 
-          console.log(data)    //控制台输出
-        },
-
-        error: (msg) => {
-          console.log(msg)
-        }
-      })
-    }
-
-    $.ajax({
-      type: "post",
-      url: "https://danmu.sea-group.org/bililogin.php",
-      data: {
-        request: "new"
-      }, // 提交到demo.php的数据
-      dataType: "json", // 回调函数接收数据的数据格式
-      success: (msg) => {
-        var data = ''
-        if(msg !== '') {
-          data = eval("(" + msg + ")")
-          console.log(data, msg)    //将返回的json数据进行解析，并赋给data
-        }
-        window.open("https://cli.im/api/qrcode/code?text=" + data.data.url + "&mhid=4ErBBQHuy88hMHYvI9JWPK8")
-        oauthKey(data.data.oauthKey)
-        // console.log(data) // 控制台输出
-      },
-
-      error:function(msg){
-        console.log(msg)
+        notification.error({
+          message: '登录失败',
+          description: error.message,
+          duration: 2
+        })
       }
-    })
-  }
+    }
+  }, [close, login, requestLogin, user])
 
   return (
     <Card title = '账号池管理'>
+      {bilibiliLoginModal}
+
       <BilibiliAccountList user = {user} forceRefresh = {forceRefreshAccountList} />
 
       <Form
@@ -84,7 +157,7 @@ export const AccountListSetting = ({ user }) => {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish}
+        onFinish = {onFinish}
         layout = {'inline'}
         style = {{
           marginTop: '1em'
@@ -93,7 +166,7 @@ export const AccountListSetting = ({ user }) => {
         <Form.Item label = '录入新账号：'></Form.Item>
 
         <Form.Item
-          name="account"
+          name="accountName"
           rules={[
             {
               required: true,
@@ -107,7 +180,7 @@ export const AccountListSetting = ({ user }) => {
           <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="账号" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button">
+          <Button loading = {requestingState.pending} type="primary" htmlType="submit" className="login-form-button">
             上传
           </Button>
         </Form.Item>
