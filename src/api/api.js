@@ -152,5 +152,77 @@ export const api = {
     const error = Named('RemoveError')(new Error(message))
     console.error(error)
     throw error
+  },
+
+  /**
+   * Add a Bilibili Room
+   * @param {{
+    *  user: string
+    *  room: {
+    *    id: string,
+    *    name: string
+    *  }
+    *}} payload
+    * @returns {Promise<true>}
+    */
+  async appendBilibiliRoom ({ user, room: { id: roomID, name: roomName } }) {
+    const { data, headers } = buildFormData({
+      loc_user: user,
+      room_id: roomID,
+      room_name: roomName
+    })
+
+    let response = null
+
+    try {
+      response = await axios.post('/room_add.php', data, { headers })
+    } catch (err) {
+      console.error(err)
+
+      throw Named('NetworkError')(new Error('网络错误'))
+    }
+
+    const { return: status, data: message } = JSON.parse(response.data)
+
+    if (status === "0") {
+      return true
+    } else if (status === "1") {
+      throw new Named('Duplicated-Room-ID')(new Error(message))
+    }
+
+    throw Named('UnkownAppendError')(new Error(message))
+  },
+
+  /**
+   * Remove a Bilibili Room
+   * @param {{
+    *  user: string
+    *  roomIDtoRemove: string
+    *}} payload
+    * @returns {Promise<true>}
+    */
+  async removeBilibiliRoom ({ user, roomIDtoRemove }) {
+    const { data, headers } = buildFormData({
+      loc_user: user,
+      room_id: roomIDtoRemove
+    })
+
+    let response = null
+
+    try {
+      response = await axios.post('/room_del.php', data, { headers })
+    } catch (err) {
+      console.error(err)
+
+      throw Named('NetworkError')(new Error('网络错误'))
+    }
+
+    const { return: status, data: message } = JSON.parse(response.data)
+
+    if (status === "0") {
+      return true
+    }
+
+    throw Named('UnkownRemoveError')(new Error(message))
   }
 }
