@@ -10,7 +10,7 @@ export default class Login extends Component {
         return(
             <Content style={{ margin: '0 16px' , overflow: 'initial'}}>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb.Item><h2>{this.props.login?'录入':'登陆'}</h2></Breadcrumb.Item>
+                    <Breadcrumb.Item><h2>{this.props.login?'设置':'登陆'}</h2></Breadcrumb.Item>
                 </Breadcrumb>
                 {this.props.login?<LoginFrom />:<IsLogin />}                   
             </Content>
