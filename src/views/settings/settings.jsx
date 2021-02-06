@@ -205,7 +205,7 @@ export const RoomListSetting = ({ user, roomList, setRoomList }) => {
       user,
       room
     }).then(result => {
-      setRoomList(prevRoomList => [...prevRoomList, { num: room.id, owner: room.name }])
+      setRoomList(prevRoomList => [...prevRoomList, { num: room.id, name: room.name }])
       return result
     })
   }, [user])
@@ -213,7 +213,7 @@ export const RoomListSetting = ({ user, roomList, setRoomList }) => {
   const columns = useMemo(() => {
     return [{
       title: '名称',
-      dataIndex: 'owner'
+      dataIndex: 'name'
     }, {
       title: '直播间号',
       dataIndex: 'num'
