@@ -17,7 +17,26 @@
         "tags": ["User"],
 
         "requestBody": {
-          "$ref": "#/components/requestBodies/UserLogin"
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "用户名"
+                  },
+
+                  "pass": {
+                    "type": "string",
+                    "description": "密码"
+                  }
+                },
+                "required": ["name", "pass"]
+              }
+            }
+          }
         },
 
         "responses": {
@@ -26,7 +45,14 @@
             "content": {
               "aplication/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "enum": [0, 1],
+                      "description": "0 表示成功，1 表示失败"
+                    }
+                  }
                 }
               }
             }
@@ -41,7 +67,30 @@
         "tags": ["User"],
 
         "requestBody": {
-          "$ref": "#/components/requestBodies/UserLogon"
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "邮箱"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "用户名"
+                  },
+
+                  "pass": {
+                    "type": "string",
+                    "description": "密码"
+                  }
+                },
+                "required": ["email", "name", "pass"]
+              }
+            }
+          }
         },
 
         "responses": {
@@ -50,79 +99,275 @@
             "content": {
               "aplication/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ApiResponse"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "enum": [0, 1],
+                      "description": "0 表示成功，1 表示失败"
+                    }
+                  }
                 }
               }
             }
           }
         }
       }
-    }
-  },
+    },
 
-  "components": {
-    "requestBodies": {
-      "UserLogin": {
-        "required": true,
-        "content": {
-          "multipart/form-data": {
-            "schema": {
-              "$ref": "#/components/schemas/UserLoginData"
+    "/bililist.php": {
+      "post": {
+        "description": "获取用户的 B 站账号列表",
+        "tags": ["Bilibili"],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "loc_user": {
+                    "description": "用户名",
+                    "type": "string"
+                  }
+                },
+                "required": ["loc_user"]
+              }
             }
           }
-        }
-      },
+        },
 
-      "UserLogon": {
-        "required": true,
-        "content": {
-          "multipart/form-data": {
-            "schema": {
-              "$ref": "#/components/schemas/UserLogonData"
+        "responses": {
+          "200": {
+            "description": "用户的 B 站账号列表",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "description": "用户的 B 站账号列表",
+                  "example": ["accountA", "accountB"],
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           }
         }
       }
     },
 
-    "schemas": {
-      "UserLoginData": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
+    "/bilidel.php": {
+      "post": {
+        "description": "从用户的 B 站账号列表中删除指定账号",
+        "tags": ["Bilibili"],
 
-          "pass": {
-            "type": "string"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "loc_user": {
+                    "description": "用户名",
+                    "type": "string"
+                  },
+                  "del_user": {
+                    "description": "待删除的 B 站账号",
+                    "type": "string"
+                  }
+                },
+                "required": ["loc_user", "del_user"]
+              }
+            }
           }
         },
-        "required": ["name", "pass"]
-      },
 
-      "UserLogonData": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
+        "responses": {
+          "200": {
+            "description": "删除结果",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "return": {
+                      "type": "string",
+                      "enum": ["0"],
+                      "description": "'0' 表示删除成功"
+                    },
 
-          "pass": {
-            "type": "string"
+                    "data": {
+                      "type": "string",
+                      "enum": ["删除成功"],
+                      "description": "状态描述信息"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/room_list.php": {
+      "post": {
+        "description": "获取用户的直播间列表",
+        "tags": ["Room"],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "loc_user": {
+                    "description": "用户名",
+                    "type": "string"
+                  }
+                },
+                "required": ["loc_user"]
+              }
+            }
           }
         },
-        "required": ["email", "name", "pass"]
-      },
 
-      "ApiResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "number",
-            "description": "0 表示成功，1 表示失败"
+        "responses": {
+          "200": {
+            "description": "获取成功",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "从「房间号」到「房间名」的记录",
+                  "example": {
+                    "8725120": "古守",
+                    "22347054": "nano"
+                  },
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/room_add.php": {
+      "post": {
+        "description": "向用户的直播间列表中添加房间",
+        "tags": ["Room"],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "loc_user": {
+                    "description": "用户名",
+                    "type": "string"
+                  },
+                  "room_id": {
+                    "description": "房间号",
+                    "type": "string"
+                  },
+                  "room_name": {
+                    "description": "房间名",
+                    "type": "string"
+                  }
+                },
+                "required": ["loc_user", "room_id", "room_name"]
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "添加结果",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "return": {
+                      "type": "string",
+                      "enum": ["0", "1"],
+                      "description": "'0' 表示添加成功, '1' 表示房间已存在"
+                    },
+
+                    "data": {
+                      "type": "string",
+                      "enum": ["添加成功", "房间号已添加"],
+                      "description": "状态描述信息"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/room_del.php": {
+      "post": {
+        "description": "从用户的直播间列表中删除房间",
+        "tags": ["Room"],
+
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "loc_user": {
+                    "description": "用户名",
+                    "type": "string"
+                  },
+                  "room_id": {
+                    "description": "待删除的房间号",
+                    "type": "string"
+                  }
+                },
+                "required": ["loc_user", "room_id"]
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "删除结果",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "return": {
+                      "type": "string",
+                      "enum": ["0"],
+                      "description": "'0' 表示删除成功"
+                    },
+
+                    "data": {
+                      "type": "string",
+                      "enum": ["删除成功"],
+                      "description": "状态描述信息"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
