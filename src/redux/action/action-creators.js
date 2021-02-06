@@ -1,4 +1,4 @@
-import {SETCOLLAPSED,SETROOM,SETDATA,ISLOGIN,SETUSER} from './action-types'
+import {SETCOLLAPSED,SETROOM,SETDATA,ISLOGIN,SETUSER,SETROOMLIST} from './action-types'
 //侧栏状态
 export const setCollapsed = (boolean) => ({type:SETCOLLAPSED,data:boolean})
 
@@ -11,5 +11,8 @@ export const setData = (array) => ({type:SETDATA,data:array})
 //登陆账号
 export const setUser = (string) => ({type:SETUSER,data:string})
 
-//
+//登陆状态
 export const isLogin = (boolean) => ({type:ISLOGIN,data:boolean})
+
+//房间列表源
+export const setRoomList = (array) => ({type:SETROOMLIST,data:array})

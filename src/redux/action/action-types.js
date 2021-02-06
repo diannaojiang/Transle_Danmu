@@ -12,3 +12,5 @@ export const SETDATA = 'SETDATA'
 export const ISLOGIN = 'ISLOGIN'
 
 export const SETUSER = 'SETUSER'
+
+export const SETROOMLIST = 'SETROOMLIST'
