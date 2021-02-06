@@ -1,7 +1,8 @@
 import {SETROOM} from '../../action/action-types'
 
 //定义默认数据
-const room = {num:'8725120',owner:'古守',color:'#ff6666',url:''}
+const room = {}
+//const room = {num:'8725120',owner:'古守',url:''}
 
 //Reducer
 const reducer = (state = room,action) => {
