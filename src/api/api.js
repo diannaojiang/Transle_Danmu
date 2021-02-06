@@ -94,6 +94,85 @@ export const api = {
     throw Named('ServerReject')(new Error('注册失败'))
   },
 
+  /** Request Bilibili Account Login
+   * @returns {Promise<{
+   *   url: string
+   *   oauthKey: string
+   * }>}
+  */
+  async requestBilibiliAccountLogin () {
+    const { data, headers } = buildFormData({
+      request: 'new'
+    })
+
+    let response = null
+
+    try {
+      response = await axios.post('/bililogin.php', data, { headers })
+    } catch (err) {
+      console.error(err)
+
+      throw Named('NetworkError')(new Error('网络错误'))
+    }
+
+    const responseData = JSON.parse(response.data)
+
+    const { code } = responseData
+
+    if (code === 0) {
+      const { data: { url, oauthKey } } = responseData
+
+      return {
+        url,
+        oauthKey
+      }
+    }
+
+    throw Named('UnkownRequestError')(new Error('未知错误'))
+  },
+
+  /** Try to Append Bilibili Account
+   *  @param {{
+   *    user: string
+   *    accountName: string
+   *    oauthKey: string
+   *  }} payload
+   *
+   *  @returns {Promise<{
+   *    status: string,
+   *    message: string
+   *  }>}
+   */
+  async tryToAppendBilibiliAccount ({ user, accountName, oauthKey }) {
+    const { data, headers } = buildFormData({
+      request: 'oauth',
+      loc_user: user,
+      name: accountName,
+      key: oauthKey
+    })
+
+    let response = null
+
+    try {
+      response = await axios.post('/bililogin.php', data, { headers })
+    } catch (err) {
+      console.error(err)
+
+      throw Named('NetworkError')(new Error('网络错误'))
+    }
+
+    const responseData = JSON.parse(response.data)
+
+    console.log(JSON.stringify(responseData, null, 2))
+
+    const { return: status, data: message } = responseData
+
+    return {
+      status,
+      message
+    }
+  },
+
   /**
    * Get Bilibili Account List
    * @param {{
