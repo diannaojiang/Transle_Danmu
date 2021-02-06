@@ -65,7 +65,7 @@ export default class SectionLeft extends Component {
         const {roomlist} = this.state;
         const MenuItems = roomlist.map((room,index)=>
             <Menu.Item key={index} icon={<YoutubeOutlined />} onClick={()=>this.handleClick(room,user)}>
-                {room.owner}
+                {room.name}
             </Menu.Item>)
         return(
             <Sider style={{

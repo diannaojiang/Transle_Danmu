@@ -303,5 +303,29 @@ export const api = {
     }
 
     throw Named('UnkownRemoveError')(new Error(message))
-  }
+  },
+  /**
+  * Get Roomlist
+  * @param {{
+  *  user: string
+  * }} payload
+  */
+ async getRoomlist ({ user }) {
+   const { data, headers } = buildFormData({
+    loc_user: user,
+   })
+
+   try {
+     const response = await axios.post('/room_list.php', data, {
+       headers
+     })
+     const roomlist = response.data
+     return(roomlist)
+
+   } catch (err) {
+     console.error(err)
+
+     throw Named('NetworkError')(new Error('网络错误'))
+   }
+ },
 }

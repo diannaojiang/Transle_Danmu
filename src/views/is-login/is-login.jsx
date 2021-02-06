@@ -36,7 +36,22 @@ export default class IsLogin extends Component {
         this.props.setUser(this.state.user)
         this.props.isLogin(true)
         this.openNotificationWithIcon("success", "登陆成功", "点击房间进行同传,点击录入进行账号池录入")
-        this.props.history.push('/room')
+
+        api.getRoomlist({
+          user: values.user,
+        }).then((roomlist)=>{
+          let list=[]
+          for(var room in roomlist){
+            list.push({num:room,name:roomlist[room]})
+          }
+          this.props.setRoomList(list)
+          this.props.history.push('/room')
+        }).catch((error) => {
+          if (error.name === 'NetworkError') {
+            this.openNotificationWithIcon("error", "连接失败", "请检查网络连接或联系本人")
+          }    
+        })
+
       }).catch((error) => {
         if (error.name === 'NetworkError') {
           this.openNotificationWithIcon("error", "连接失败", "请检查网络连接或联系本人")
