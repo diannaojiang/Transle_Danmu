@@ -189,15 +189,13 @@ export const AccountListSetting = ({ user }) => {
   )
 }
 
-export const RoomListSetting = ({ user }) => {
-  const [roomList, setRoomList] = useState([])
-
+export const RoomListSetting = ({ user, roomList, setRoomList }) => {
   const [removingState, removeBilibiliRoom] = useAsync(async (roomIDtoRemove) => {
     return api.removeBilibiliRoom({
       user,
       roomIDtoRemove
     }).then(result => {
-      setRoomList(prevRoomList => prevRoomList.filter(it => it.id !== roomIDtoRemove))
+      setRoomList(prevRoomList => prevRoomList.filter(it => it.num !== roomIDtoRemove))
       return result
     })
   }, [user])
@@ -207,7 +205,7 @@ export const RoomListSetting = ({ user }) => {
       user,
       room
     }).then(result => {
-      setRoomList(prevRoomList => [...prevRoomList, room])
+      setRoomList(prevRoomList => [...prevRoomList, { num: room.id, owner: room.name }])
       return result
     })
   }, [user])
@@ -215,17 +213,17 @@ export const RoomListSetting = ({ user }) => {
   const columns = useMemo(() => {
     return [{
       title: '名称',
-      dataIndex: 'name'
+      dataIndex: 'owner'
     }, {
       title: '直播间号',
-      dataIndex: 'id'
+      dataIndex: 'num'
     }, {
       title: '操作',
       width: '6em',
       align: 'center',
-      render: ({ id }) => (
+      render: ({ num }) => (
         <Button danger onClick = {() => {
-          removeBilibiliRoom(id)
+          removeBilibiliRoom(num)
         }}>
           移除
         </Button>
@@ -236,7 +234,7 @@ export const RoomListSetting = ({ user }) => {
   const dataSource = useMemo(() => {
     return roomList.map(room => ({
       ...room,
-      key: room.id
+      key: room.num
     }))
   }, [roomList])
 
@@ -293,7 +291,7 @@ export const RoomListSetting = ({ user }) => {
             },
             () => ({
               async validator (_, id) {
-                if (id && roomList.some((it) => it.id === id)) {
+                if (id && roomList.some((it) => it.num === id)) {
                   throw new Error('该直播间已存在')
                 }
               },
@@ -316,11 +314,11 @@ export const RoomListSetting = ({ user }) => {
   )
 }
 
-export const SettingsPage = ({ user }) => {
+export const SettingsPage = ({ user, roomList, setRoomList }) => {
   return (
     <>
       <AccountListSetting user = {user} />
-      <RoomListSetting user = {user} />
+      <RoomListSetting user = {user} roomList = {roomList} setRoomList = {setRoomList}/>
     </>
   )
 }
