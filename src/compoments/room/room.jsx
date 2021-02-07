@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import { Layout,Breadcrumb,} from 'antd';
-import Input from '../../containers/input/input'
+import InputMsg from '../../containers/input/input'
 import EasyPlayer from '../../views/easy-player/easy-player'
 import './room.css'
 
@@ -21,7 +21,7 @@ export default class Room extends Component {
                 </Breadcrumb>
                 <EasyPlayer url={url}/>
                 <br/>
-                <Input handleUpdata={()=>this.handleUpdata()}/>
+                <InputMsg handleUpdata={()=>this.handleUpdata()}/>
             
             </Content>
         )
