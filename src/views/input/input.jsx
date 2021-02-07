@@ -1,9 +1,10 @@
 import React,{useState} from 'react'
-import { Input, Form, Button,notification ,Radio } from 'antd';
+import { Input, Form, Button,notification ,Radio,Select  } from 'antd';
 import $ from 'jquery'
-
+const { Option } = Select;
 const { TextArea } = Input;
 var user = 0
+var mode = 1
 const colorlist = [
   {value:"16777215",color:'#000000',inner:'白色'},
   {value:"14893055",color:'#e33fff',inner:'紫色'},
@@ -42,6 +43,7 @@ const InputMsg = (props) => {
   };
   const onFinish = (msg) => {
     var message = msg.value
+    message=message.replace(/\n/g,'');
     senddanmu(message,message.length)
 
   };
@@ -68,20 +70,23 @@ const InputMsg = (props) => {
     $.ajax({
       type: "post",
       url: "https://danmu.sea-group.org/danmu.php",
-      data: {room:room,user:user,danmu:headmsg,loc_user:props.user,color:color.value},//提交到demo.php的数据
+      data: {room:room,user:user,danmu:headmsg,loc_user:props.user,color:color.value,mode:mode},//提交到demo.php的数据
       dataType: "json",//回调函数接收数据的数据格式
       success: (msg)=>{
         var data='';
+        console.log(msg)
         if(msg!==''){
           data = eval("("+msg+")");    //将返回的json数据进行解析，并赋给data
         }
         if(data.hasOwnProperty("error")){
-          openNotificationWithIcon("error",'发送失败',`error:${data.error},user:${data.user},msg:${data.danmu}`);
+          openNotificationWithIcon("info",'发送出现问题',`提示信息:${data.error},用户:${data.user},弹幕:${headmsg}`);
         }
         else{
-          openNotificationWithIcon("success",'发送成功',`弹幕:${data.user}:${data.danmu}`);
+          openNotificationWithIcon("success",'发送成功',`弹幕:${data.user}:${headmsg}`);
         }
+      
         console.log(data);    //控制台输出
+        
       },
       error:(msg)=>{
         openNotificationWithIcon("error","连接失败","请检查网络连接或联系本人");
@@ -104,12 +109,22 @@ function onkeydown(){
   }
   
 }
+function handleChange(value) {
+  mode=value
+}
   const radioButtons = colorlist.map((radioButton,index)=>
   <Radio.Button key={index} value={radioButton} style={{color:radioButton.color}}>{radioButton.inner}</Radio.Button>
   )
   return (
     <div>
-      <div>当前选择颜色:{color.inner}</div>
+      <div>
+        当前选择颜色:{color.inner}&nbsp;&nbsp;
+        当前选择:&nbsp;&nbsp;<Select defaultValue={1} style={{ width: 120 }} onChange={handleChange}>
+      <Option value={1}>滚动</Option>
+      <Option value={4}>底部</Option>
+      <Option value={5}>顶部</Option>
+      </Select>
+      </div>
       <Radio.Group onChange={(e) => setColor(e.target.value)}>
         {radioButtons}
       </Radio.Group>
