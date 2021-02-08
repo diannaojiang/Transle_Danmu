@@ -17,7 +17,7 @@ export default class Room extends Component {
             
             <Content style={{ margin: '0 16px' , overflow: 'initial'}}>
                 <Breadcrumb style={{ margin: '16px 0' }}>
-                    <Breadcrumb.Item><h2>{this.props.room.owner}</h2></Breadcrumb.Item>
+                    <Breadcrumb.Item><h2>当前直播：{this.props.room.name}&nbsp;&nbsp;直播间号：{this.props.room.num}</h2></Breadcrumb.Item>
                 </Breadcrumb>
                 <EasyPlayer url={url}/>
                 <br/>
