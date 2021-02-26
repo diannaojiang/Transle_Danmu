@@ -1,6 +1,6 @@
 // @ts-check
 
-import { useCallback } from 'react'
+import { useRef, useCallback } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 import { api } from '../api/api'
 import { notification } from 'antd'
@@ -33,6 +33,8 @@ const splitDanmu = (danmu) => {
 
 /** @type {() => N.UseSendDanmuHook} */
 export const useSendDanmu = () => {
+  const ref = useRef(0)
+
   const { roomNum, user } = useSelector((state) => ({
     roomNum: state.room.num,
     user: state.user
@@ -44,7 +46,7 @@ export const useSendDanmu = () => {
         try {
           await api.sendDanmu({
             roomNum,
-            user: 0,
+            user: ref.current++,
             danmu: chunk,
             loc_user: user,
             color: 16777215,
