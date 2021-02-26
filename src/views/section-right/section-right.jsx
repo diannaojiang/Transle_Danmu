@@ -23,7 +23,7 @@ export default class SectionRight extends Component {
                         <Route path='/signup' component={SignUp}/>
                         <Redirect to='/index' />
                 </Switch>
-                <Footer style={{ textAlign: 'center' }}>同传姬 ©2020 Created by 電、Mark</Footer>
+                <Footer style={{ textAlign: 'center' }}>同传姬 ©2021 同传姬开发组</Footer>
             </Layout>
         )
     }

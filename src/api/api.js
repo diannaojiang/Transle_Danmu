@@ -328,4 +328,105 @@ export const api = {
      throw Named('NetworkError')(new Error('网络错误'))
    }
  },
+
+ /**
+  * Search Song
+  * @param {{
+  *   searchKey: string,
+  * }} payload
+  */
+ async searchSong ({ searchKey }) {
+   let response = null
+
+   try {
+     response = await axios.get('https://music.163.com/api/search/get/web', {
+       params: {
+         s: searchKey,
+         type: 1,
+         limit: 20
+       }
+     })
+   } catch (err) {
+     throw Named('NetworkError')(new Error('网络错误'))
+   }
+
+   const { code, result } = response.data
+   if (code === 200) {
+     return result
+   }
+
+   throw Named('UnkownSearchError')(new Error(`未知搜索错误 #${code}`))
+ },
+
+ /**
+  * Get Lyrics of Song
+  * @param {{
+  *   songID: string
+  * }} payload
+  * @returns {Promise<string[]>}
+  */
+ async getLyrics ({ songID }) {
+   let response = null
+
+   try {
+     response = await axios.get('https://music.163.com/api/song/lyric', {
+       params: {
+         id: songID,
+         lv: -1,
+         kv: -1,
+         tv: -1
+       }
+     })
+   } catch (err) {
+     throw Named('NetworkError')(new Error('网络错误'))
+   }
+
+   const { lrc, tlyric } = response.data
+   return [lrc, tlyric].filter(it => !!it && it.lyric.length !== 0).map(it => it.lyric)
+ },
+
+ /**
+  * Send Danmu
+  * @param {{
+  *   roomNum: string,
+  *   user: number,
+  *   danmu: string,
+  *   loc_user: string,
+  *   color: number,
+  *   mode: number
+  * }} payload
+  * @returns {Promise<true>}
+  */
+ async sendDanmu ({ roomNum, user, danmu, loc_user, color, mode }) {
+   const { data, headers } = buildFormData({
+     room: roomNum,
+     user,
+     danmu,
+     loc_user,
+     color,
+     mode
+   })
+
+   let response = null
+
+   try {
+     response = await axios.post('/danmu.php', data, { headers })
+   } catch (err) {
+     throw Named('NetworkError')(new Error('网络错误'))
+   }
+
+   const { error } = eval('(' + response.data + ')')
+
+   if (error && error.length) {
+     if (error.includes('msg in 1s')) {
+       throw Named('OverheatingError')(new Error(error))
+     } else if (error.includes('msg repeat')) {
+       throw Named('DanmuRepeatError')(new Error(error))
+     } else {
+       throw Named('UnkownSendError')(new Error(error))
+     }
+   }
+
+   return true
+  }
 }

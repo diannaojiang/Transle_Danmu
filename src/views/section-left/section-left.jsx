@@ -76,7 +76,7 @@ export default class SectionLeft extends Component {
                 <div className="logo" />
                 
                 <Avatar size={50} style={{marginTop:5,marginBottom:5,marginLeft:12,marginRight:12}} src='./komori.jpg' />
-                <NavLink to={'/login'}><Button type="dashed" style={{marginLeft:6,marginRight:6}} ghost>{this.props.login?'录入':'登陆'}</Button></NavLink>
+                <NavLink to={'/login'}><Button type="dashed" style={{marginLeft:6,marginRight:6}} ghost>{this.props.login?'录入':'登录'}</Button></NavLink>
                 <Menu theme="dark" mode="inline">
                 <Menu.Item key="1" icon={<GithubOutlined />}>
                     <NavLink to={'/index'}>同传姬介绍</NavLink>               

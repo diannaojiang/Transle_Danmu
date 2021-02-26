@@ -35,7 +35,7 @@ export default class IsLogin extends Component {
       }).then(() => {
         this.props.setUser(this.state.user)
         this.props.isLogin(true)
-        this.openNotificationWithIcon("success", "登陆成功", "点击房间进行同传,点击录入进行账号池录入")
+        this.openNotificationWithIcon("success", "登录成功", "点击房间进行同传,点击录入进行账号池录入")
 
         api.getRoomlist({
           user: values.user,
@@ -66,9 +66,6 @@ export default class IsLogin extends Component {
 
           return (
           <>
-                    <Paragraph>
-                    <Text strong>同传姬采用账号池机制，每个字幕组拥有自己独立的账号池。如需申请账号或开通新直播间请联系qq3149815852。</Text>
-                    </Paragraph>
             <Form
               name="normal_login"
               className="login-form"
