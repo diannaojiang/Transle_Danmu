@@ -3,6 +3,7 @@ import { Layout,Breadcrumb,} from 'antd';
 import InputMsg from '../../containers/input/input'
 import EasyPlayer from '../../views/easy-player/easy-player'
 import './room.css'
+import { LyricPanel } from '../lyric-panel/lyric-panel'
 
 export default class Room extends Component {
     render(){
@@ -22,6 +23,8 @@ export default class Room extends Component {
                 <EasyPlayer url={url}/>
                 <br/>
                 <InputMsg handleUpdata={()=>this.handleUpdata()}/>
+
+                <LyricPanel />
             
             </Content>
         )

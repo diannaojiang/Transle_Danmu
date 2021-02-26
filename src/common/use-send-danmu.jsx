@@ -65,8 +65,6 @@ export const useSendDanmu = () => {
             })
           }
         }
-
-        console.log('sent', chunk)
       }
     }, [roomNum, user])
   }
