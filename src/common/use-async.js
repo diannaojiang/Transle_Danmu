@@ -55,5 +55,7 @@ export const useAsync = (fn, deps) => {
     })
   }, [...deps, isMounted])
 
-  return [state, callback]
+  /** @type [{ pending: Boolean, error: any, value: any }, callback: (...args: any[]) => any] */
+  const hook = [state, callback]
+  return hook
 }
