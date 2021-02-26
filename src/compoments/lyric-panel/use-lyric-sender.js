@@ -97,6 +97,3 @@ export const useLyricsSender = ({
 
   return self
 }
-/** 
- * "{error:\"\u8d85\u51fa\u9650\u5236\u957f\u5ea6\",room:\"921874\",user:\"niamori\",danmu:\"\u5f37\u304f\u306a\u308c\u308b\u7406\u7531\u3092\u77e5\u3063\u305f\u3000\u50d5\u3092\u9023\u308c\u3066\u9032\u3081\"}"
- */
