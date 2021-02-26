@@ -339,7 +339,7 @@ export const api = {
    let response = null
 
    try {
-     response = await axios.get('https://music.163.com/api/search/get/web', {
+     response = await axios.get('/api/search/get/web', {
        params: {
          s: searchKey,
          type: 1,
@@ -369,7 +369,7 @@ export const api = {
    let response = null
 
    try {
-     response = await axios.get('https://music.163.com/api/song/lyric', {
+     response = await axios.get('/api/song/lyric', {
        params: {
          id: songID,
          lv: -1,
